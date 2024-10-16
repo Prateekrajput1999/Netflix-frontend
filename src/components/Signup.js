@@ -3,12 +3,14 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
-import { API_URL } from "../Constants";
+import { API_URL, BACKEND_URL, FRONTEND_URL } from "../Constants";
+import { Spinner } from "./UI/Spinner";
 
 export default function Signup({ initialType = "signup" }) {
   const [type, setType] = useState(initialType);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -26,11 +28,14 @@ export default function Signup({ initialType = "signup" }) {
     e.preventDefault();
     setError("");
 
+    if (isLoading) return;
     try {
       if (isSignup) {
+        setIsLoading(true);
         await axios.post(`${API_URL}signup/`, { email, password, name });
         setType("login"); // Switch to login after successful signup
       } else {
+        setIsLoading(true);
         const response = await axios.post(`${API_URL}login/`, {
           email,
           password,
@@ -47,6 +52,8 @@ export default function Signup({ initialType = "signup" }) {
           ? "Signup failed. Please try again."
           : "Login failed. Please check your credentials."
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -56,6 +63,22 @@ export default function Signup({ initialType = "signup" }) {
         <h2 className="text-3xl font-bold mb-6 text-white text-center">
           {isSignup ? "Sign Up" : "Log In"}
         </h2>
+        <div className="flex items-center justify-center space-x-3">
+          <div
+            onClick={() => window.open(FRONTEND_URL, "_blank")}
+            className=" cursor-pointer shadow-md shadow-yellow-400 hover:bg-gray-800 flex items-center text-white border text-xs font-bold border-white rounded-lg p-1"
+          >
+            <img alt="github_img" src="github.svg" className="h-6 w-6" />
+            <span>Frontend</span>
+          </div>
+          <div
+            onClick={() => window.open(BACKEND_URL, "_blank")}
+            className=" cursor-pointer shadow-md shadow-yellow-400 hover:bg-gray-800 flex items-center text-white border text-xs font-bold border-white rounded-lg p-1"
+          >
+            <img alt="github_img" src="github.svg" className="h-6 w-6" />
+            <span>Backend</span>
+          </div>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           {isSignup && (
             <div>
@@ -113,15 +136,26 @@ export default function Signup({ initialType = "signup" }) {
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <button
             type="submit"
-            className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            disabled={isLoading}
+            className={`w-full flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${
+              isLoading
+                ? "cursor-default text-gray-300 bg-red-500"
+                : "text-white bg-red-600 hover:bg-red-700"
+            }`}
           >
             {isSignup ? "Sign Up" : "Log In"}
+            {isLoading && <Spinner className="ml-2" variant="lens" size="sm" />}
           </button>
         </form>
         <div className="mt-4 text-center">
           <button
             onClick={() => setType(isSignup ? "login" : "signup")}
-            className="text-sm text-gray-300 hover:underline focus:outline-none"
+            disabled={isLoading}
+            className={`text-sm focus:outline-none ${
+              isLoading
+                ? "text-gray-500 cursor-default"
+                : "text-gray-300 hover:underline"
+            }`}
           >
             {isSignup
               ? "Already have an account? Log in"

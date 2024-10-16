@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Star, Clock } from "lucide-react";
 import { useAuth } from "./AuthContext";
-import { API_URL } from "../Constants";
+import { API_URL, BACKEND_URL, FRONTEND_URL } from "../Constants";
 import Cookies from "js-cookie";
 
 export default function Movies() {
@@ -52,13 +52,27 @@ export default function Movies() {
 
   return (
     <div className="bg-black min-h-screen cursor-pointer">
-      <header className="relative flex justify-center items-center bg-red-600 py-4">
+      <header className="cursor-default relative flex justify-center space-x-3 items-center bg-red-600 py-4">
+        <div
+          onClick={() => window.open(FRONTEND_URL, "_blank")}
+          className="cursor-pointer shadow-md shadow-yellow-400 flex items-center text-white border text-xs font-bold hover:bg-red-500 border-white rounded-lg p-1"
+        >
+          <img src="github.svg" alt="github_img" className="h-6 w-6" />
+          <span>Frontend</span>
+        </div>
+        <div
+          onClick={() => window.open(BACKEND_URL, "_blank")}
+          className="cursor-pointer shadow-md shadow-yellow-400 flex items-center text-white border text-xs font-bold hover:bg-red-500 border-white rounded-lg p-1"
+        >
+          <img src="github.svg" alt="github_img" className="h-6 w-6" />
+          <span>Backend</span>
+        </div>
         <h1 className="text-white text-3xl font-bold text-center">
           Netflix Clone
         </h1>
         <div
           onClick={logout}
-          className="absolute right-2 p-2 text-black py-1 bg-white rounded-xl hover:bg-gray-200"
+          className="absolute cursor-pointer right-2 p-2 text-black py-1 bg-white rounded-xl hover:bg-gray-200"
         >
           Logout
         </div>
