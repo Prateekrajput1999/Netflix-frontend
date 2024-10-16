@@ -6,7 +6,6 @@ export const Spinner = ({
   let variantClasses = "";
   let sizeClasses = "";
 
-  // Handling variant classes
   if (variant === "primary") {
     variantClasses = "border-blue-500 border-t-blue-900";
   } else if (variant === "secondary") {
@@ -21,7 +20,6 @@ export const Spinner = ({
     variantClasses = "border-yellow-300 border-t-red-400";
   }
 
-  // Handling size classes
   if (size === "xs") {
     sizeClasses = "h-4 w-4 border-[2px]";
   } else if (size === "sm") {
@@ -32,7 +30,6 @@ export const Spinner = ({
     sizeClasses = "h-10 w-10 border-4";
   }
 
-  // Combining all classes
   const combinedClasses = `${variantClasses} ${sizeClasses} animate-spin rounded-full ${className}`;
 
   return <div className={combinedClasses} />;

@@ -29,11 +29,25 @@ export default function Signup({ initialType = "signup" }) {
     setError("");
 
     if (isLoading) return;
+
+    // email validation regex pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    // Password length check
+    if (password.length < 4) {
+      setError("Password must be at least 4 characters long.");
+      return;
+    }
+
     try {
       if (isSignup) {
         setIsLoading(true);
         await axios.post(`${API_URL}signup/`, { email, password, name });
-        setType("login"); // Switch to login after successful signup
+        setType("login");
       } else {
         setIsLoading(true);
         const response = await axios.post(`${API_URL}login/`, {
@@ -130,6 +144,7 @@ export default function Signup({ initialType = "signup" }) {
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
               placeholder="••••••••"
+              minLength={4}
               required
             />
           </div>
