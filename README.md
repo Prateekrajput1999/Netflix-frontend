@@ -2,7 +2,7 @@
 
 A full-stack Netflix clone built with MERN STACK, features including authentication, responsive design, and secure API integration. This project mimics some key features of Netflix, allowing users to create accounts, log in, and view movie details.
 
-✨ Backend Repository -> https://github.com/Prateekrajput1999/Netflix-server
+✨ Backend Repository of Netflix clone app -> https://github.com/Prateekrajput1999/Netflix-server
 
 ## ✨ Features
 
